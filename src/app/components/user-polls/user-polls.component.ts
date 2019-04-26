@@ -9,7 +9,7 @@ import Poll from '../../models/Poll';
   styleUrls: ['./user-polls.component.css']
 })
 export class UserPollsComponent implements OnInit {
-  private polls: Poll[];
+  polls: Poll[];
 
   constructor(private pollService: PollService, private authService: AuthService) {
   }

@@ -21,7 +21,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import { UserPollsComponent } from './components/user-polls/user-polls.component';
-import { ToastComponent } from './toast/toast.component';
+import { ToastComponent } from './components/toast/toast.component';
 
 @NgModule({
   declarations: [

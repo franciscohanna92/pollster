@@ -5,7 +5,7 @@ import Poll from '../../models/Poll';
 import PollOption from '../../models/PollOption';
 import {ToastrService} from 'ngx-toastr';
 import {AuthService} from '../../services/auth.service';
-import {ToastService} from '../../toast/toast.service';
+import {ToastService} from '../toast/toast.service';
 
 @Component({
   selector: 'app-poll-view',

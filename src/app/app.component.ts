@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {faPollH} from '@fortawesome/free-solid-svg-icons';
 import {AuthService} from './services/auth.service';
-import {ToastService} from './toast/toast.service';
+import {ToastService} from './components/toast/toast.service';
 
 @Component({
   selector: 'app-root',
