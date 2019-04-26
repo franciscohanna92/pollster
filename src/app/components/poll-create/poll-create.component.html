@@ -1,0 +1,40 @@
+<div class="card">
+  <form ngNativeValidate (ngSubmit)="onSubmit()">
+    <div class="card-header">
+      <h5>Create poll</h5>
+    </div>
+    <div class="card-body">
+      <div class="mb-4">
+        <label class="sr-only" for="pollTitle">Poll title</label>
+        <input type="text"
+               class="form-control form-control-lg"
+               id="pollTitle"
+               name="pollTitle"
+               [(ngModel)]="poll.title"
+               placeholder="Give your poll a title"
+               required/>
+      </div>
+      <div *ngFor="let option of pollOptions; let i = index" class="input-group mb-3">
+        <label class="sr-only " for="option{{i}}">Option {{i + 1}} </label>
+        <input class="form-control"
+               id="option{{i}}"
+               name="option{{i}}"
+               type="text"
+               [(ngModel)]="option.text"
+               placeholder="Enter poll option"
+               required/>
+        <div class="input-group-append">
+          <button class="btn btn-muted text-danger font-weight-bold" type="button" (click)="removeOption(i)">✕</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-primary mr-3" type="submit">Create poll</button>
+      <button class="btn btn-outline-primary border-0 bg-white text-primary" type="button"
+              (click)="addOption()">
+        <span class="align-middle">Add option</span>
+      </button>
+    </div>
+  </form>
+</div>

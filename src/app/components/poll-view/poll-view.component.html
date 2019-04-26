@@ -1,0 +1,54 @@
+<div class="card mb-4" *ngIf="poll && pollOptions">
+  <form ngNativeValidate (ngSubmit)="onSubmit()">
+    <div class="card-header">
+      <h5>{{poll.title}}</h5>
+    </div>
+    <div *ngIf="alreadyAnswered" class="alert alert-warning border-0 rounded-0 text-center">
+      You've already voted! <br>
+      <a routerLink="results">Check the results.</a>
+    </div>
+    <div class="card-body">
+      <ul class="list-group mb-3">
+        <li *ngFor="let option of pollOptions; let i = index"
+            class="py-3 list-group-item d-flex justify-content-between align-items-center cursor-pointer">
+          <div class="custom-control custom-radio">
+            <input id="option{{i}}"
+                   name="option{{i}}"
+                   class="custom-control-input"
+                   type="radio"
+                   [disabled]="alreadyAnswered"
+                   [value]="option.id"
+                   [(ngModel)]="selectedOptionId"
+                   required/>
+            <label class="custom-control-label cursor-pointer" for="option{{i}}">{{option.text}}</label>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="card-footer pt-0">
+      <div class="d-flex align-items-baseline" *ngIf="!alreadyAnswered">
+        <button class="btn btn-primary mr-2" type="submit">Submit</button>
+        <a routerLink="results" class="text-muted ml-auto">Go to poll results</a>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h5>Share</h5>
+  </div>
+  <div class="card-body">
+    <div class="input-group pb-4">
+      <label for="currentUrlInput" class="sr-only">Poll URL</label>
+      <input (click)="copyLink()" id="currentUrlInput" class="rounded-left form-control border pl-3" type="text"
+             [value]="currentUrl">
+      <div class="input-group-append">
+        <button (click)="copyLink()" class="btn text-white bg-primary rounded-right" type="button">Copy link</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

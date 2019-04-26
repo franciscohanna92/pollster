@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Latest polls</h5>
+  </div>
+  <div class="card-body mb-3">
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let poll of polls">
+        <a class="text-dark" routerLink="{{poll.id}}">{{poll.title}}</a>
+        <span class="badge badge-primary badge-pill">{{poll.totalAnswers}}</span>
+      </li>
+    </ul>
+  </div>
+</div>
