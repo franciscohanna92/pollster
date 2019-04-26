@@ -3,10 +3,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {PollService} from '../../services/poll.service';
 import Poll from '../../models/Poll';
 import PollOption from '../../models/PollOption';
-import {faCopy} from '@fortawesome/free-solid-svg-icons';
 import {ToastrService} from 'ngx-toastr';
 import {AuthService} from '../../services/auth.service';
-import Answer from '../../models/Answer';
+import {ToastService} from '../../toast/toast.service';
 
 @Component({
   selector: 'app-poll-view',
@@ -29,7 +28,7 @@ export class PollViewComponent implements OnInit, AfterViewInit {
   constructor(private currentRoute: ActivatedRoute,
               private router: Router,
               private pollService: PollService,
-              private toastr: ToastrService,
+              private toastService: ToastService,
               private authService: AuthService) {
     this.pollId = this.currentRoute.snapshot.paramMap.get('pollId');
     this.alreadyAnswered = false;
@@ -84,10 +83,7 @@ export class PollViewComponent implements OnInit, AfterViewInit {
     // console.log(this.currentUrlInput.value);
     this.currentUrlInput.select();
     document.execCommand('copy');
-    this.toastr.success('¡Link copied!', '', {
-      positionClass: 'toast-bottom-center',
-      timeOut: 2000
-    });
+    this.toastService.show('Link copied to the clipboard', 'success');
     this.currentUrlInput.blur();
   }
 
@@ -95,7 +91,7 @@ export class PollViewComponent implements OnInit, AfterViewInit {
     this.pollService
       .addAnswer(this.poll.id, this.selectedOptionId)
       .then(() => {
-        this.router.navigate([this.poll.id, 'results']);
+        this.router.navigate(['poll', this.poll.id, 'results']);
       });
   }
 }

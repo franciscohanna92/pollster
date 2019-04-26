@@ -18,10 +18,10 @@ import {ChartsModule} from 'ng2-charts';
 import { PollBarChartComponent } from './components/poll-bar-chart/poll-bar-chart.component';
 import { HomeComponent } from './components/home/home.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {ToastrModule} from 'ngx-toastr';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import {AngularFireAuthModule} from '@angular/fire/auth';
+import { UserPollsComponent } from './components/user-polls/user-polls.component';
+import { ToastComponent } from './toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,9 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
     LatestPollsComponent,
     PollPieChartComponent,
     PollBarChartComponent,
-    HomeComponent
+    HomeComponent,
+    UserPollsComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
@@ -44,8 +46,6 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
     AngularFireAuthModule,
     ChartsModule,
     FontAwesomeModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],

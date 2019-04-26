@@ -37,7 +37,7 @@ export class PollCreateComponent implements OnInit {
 
   onSubmit(): void {
     this.pollService.savePoll(this.poll, this.pollOptions).then(() => {
-      this.router.navigate([this.poll.id]);
+      this.router.navigate(['poll', this.poll.id]);
     });
   }
 }

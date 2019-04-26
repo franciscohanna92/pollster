@@ -1,14 +1,14 @@
-import * as firebase from 'firebase';
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {AngularFireDatabase, AngularFireList, SnapshotAction, snapshotChanges} from '@angular/fire/database';
-import {Action, AngularFirestore, DocumentChangeAction, DocumentReference, DocumentSnapshot} from '@angular/fire/firestore';
-
-import Poll from '../models/Poll';
-import {map} from 'rxjs/operators';
-import PollOption from '../models/PollOption';
+import {Observable} from 'rxjs';
+import {AngularFireList} from '@angular/fire/database';
+import {Action, AngularFirestore, DocumentChangeAction, DocumentSnapshot} from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 import FieldValue = firebase.firestore.FieldValue;
+import {map} from 'rxjs/operators';
+
 import {AuthService} from './auth.service';
+import Poll from '../models/Poll';
+import PollOption from '../models/PollOption';
 import Answer from '../models/Answer';
 
 @Injectable({
@@ -20,22 +20,21 @@ export class PollService {
   constructor(private db: AngularFirestore, private authService: AuthService) {
   }
 
+  /**
+   * Retrieves the last 10 polls
+   */
   getLatestPolls(): Observable<{}[]> {
     return this.db
-      .collection('polls', ref => ref.limit(10)
-        .orderBy('id', 'desc'))
+      .collection('polls', ref => {
+        return ref.limit(10).orderBy('id', 'desc');
+      })
       .valueChanges();
-    // .pipe(
-    //   map((actions: DocumentChangeAction<Poll>[]) => {
-    //     return actions.map((a: DocumentChangeAction<Poll>) => {
-    //       const poll: Poll = a.payload.doc.data() as Poll;
-    //       poll.id = a.payload.doc.id;
-    //       return poll;
-    //     });
-    //   }),
-    // );
   }
 
+  /**
+   * Retrieves a poll
+   * @param pollId
+   */
   getPoll(pollId: string): Observable<Poll> {
     return this.db.collection('polls')
       .doc(pollId)
@@ -49,6 +48,10 @@ export class PollService {
       );
   }
 
+  /**
+   * Retrieves the options for a poll
+   * @param pollId
+   */
   getPollOptions(pollId: string): Observable<PollOption[]> {
     return this.db.collection(`polls/${pollId}/options`, ref => ref.orderBy('order', 'asc'))
       .snapshotChanges()
@@ -63,6 +66,11 @@ export class PollService {
       );
   }
 
+  /**
+   * Creates new poll
+   * @param newPoll
+   * @param newPollOptions
+   */
   async savePoll(newPoll: Poll, newPollOptions: PollOption[]): Promise<void> {
     newPoll.userId = this.authService.getCurrentUserId();
     await this.db.collection('polls')
@@ -77,11 +85,11 @@ export class PollService {
     }
   }
 
-  static randomRgba() {
-    const o = Math.round, r = Math.random, s = 255;
-    return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ', 1)';
-  }
-
+  /**
+   * Adds and answer for a poll, specifying the selected option
+   * @param pollId
+   * @param selectedOptionId
+   */
   addAnswer(pollId: string, selectedOptionId: string): Promise<void> {
     const userId = this.authService.getCurrentUserId();
     const timestamp = new Date().getTime();
@@ -106,13 +114,43 @@ export class PollService {
     });
   }
 
+  /**
+   * Checks if a poll has been already answered by a the logged user
+   * @param pollId
+   */
   async isPollAlreadyAnsweredByUser(pollId: string): Promise<any> {
     const userId = this.authService.getCurrentUserId();
     const snapshot = await this.db
       .collection(`users/${userId}/pollsAnswered`, ref => {
-        return ref.where('pollId', '==', pollId)
+        return ref.where('pollId', '==', pollId);
       }).get()
       .toPromise();
     return Promise.resolve(snapshot.docs.length > 0 ? snapshot.docs[0].data() : null);
+  }
+
+  /**
+   * Retrieves the polls for the logged user
+   */
+  getUserPolls(): Observable<Poll[]> {
+    return this.db
+      .collection('polls', ref => {
+        return ref.where('userId', '==', this.authService.getCurrentUserId());
+      })
+      .snapshotChanges()
+      .pipe(
+        map((actions: DocumentChangeAction<Poll>[]) => {
+          return actions.map((a: DocumentChangeAction<Poll>) => {
+            return a.payload.doc.data() as Poll;
+          });
+        }),
+      );
+  }
+
+  /**
+   * Retrieves a random RGBa color
+   */
+  static randomRgba() {
+    const o = Math.round, r = Math.random, s = 255;
+    return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ', 1)';
   }
 }

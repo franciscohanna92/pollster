@@ -1,10 +1,12 @@
+<app-toast></app-toast>
+
 <nav class="navbar navbar-light bg-primary fixed-top">
   <div class="container">
     <a class="navbar-brand text-white font-weight-bold" routerLink="/">
       <fa-icon [icon]="faPollH" class="mr-3"></fa-icon>Pollster
     </a>
-    <a *ngIf="router.url !== '/'" class="btn btn-primary btn-sm" routerLink="/">
-      Create poll
+    <a class="btn btn-warning btn-sm" routerLink="/user-polls">
+      My polls
     </a>
   </div>
 </nav>
@@ -12,3 +14,4 @@
 <main class="container mb-5" style="margin-top: 5rem;" >
   <router-outlet></router-outlet>
 </main>
+
